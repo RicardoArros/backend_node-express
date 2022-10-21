@@ -12,11 +12,14 @@ app.use(cors());
 
 const port = process.env.PORT || 3000;
 
-app.listen(
-  port,
-  () => {
-    console.log(`'Tu app está lista por http://localhost:${port}`);
-  }
-);
+/*
+ * Se invoca a las rutas
+ */
+
+app.use('/api', require('./routes'));
+
+app.listen(port, () => {
+  console.log(`'Tu app está lista por http://localhost:${port}`);
+});
 
 dbConnect();
