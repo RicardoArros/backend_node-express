@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 
 const UserScheme = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
-    },
-    age: {
-      type: Number,
     },
     email: {
       type: String,
@@ -16,9 +13,12 @@ const UserScheme = new mongoose.Schema(
       type: String,
     },
     role: {
-      type: ['user', 'admin'],
-      default: 'user',
+      type: ['guest', 'cooker', 'admin'],
+      default: 'guest',
     },
+    // image: {
+    //   type: String,
+    // },
   },
   {
     timestamps: true, //TODO createdAt, updatedAt

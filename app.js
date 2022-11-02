@@ -6,11 +6,13 @@ const cors = require('cors');
 
 const dbConnect = require('./config/mongo');
 
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 app.use(cors());
-
-const port = process.env.PORT || 3000;
+app.use(express.json());
+app.use(express.static('storage'));
 
 /*
  * Se invoca a las rutas
