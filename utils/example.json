@@ -1,0 +1,15 @@
+{
+  "title": "Spaghetti con Salsa Boloñesa 1",
+  "description": "Spaghetti con salsa boloñesa o bolognesa una receta muy popular y sabrosa. Siempre hay variedades en su preparación, con pequeños detalles en cuanto a los ingredientes para hacer la boloñesa. Esta versión que les traigo ahora para mi gusto es una receta mejorada y actualizada en todo aspecto a diferencia a la que tenía años atrás. Hay que ir evolucionando un poco no? Esta receta de Spaguetti con salsa boloñesa, era una receta que tenía muy pendiente de actualizar sobre todo el tema de las fotos y ahora por fin puedo nuevamente compartir esta receta con ustedes.",
+  "category": "Spaghettis",
+  "country": "Italia",  
+  "season": null,  
+  "ingredients_quantity": 6,  
+  "preparation_time": "15:00",  
+  "author": {
+    "name": "Juan Perez",
+    "nickname": "ElChoroPerez",
+    "nationality": "Chile"
+  },
+  "duration": "15:00"
+}

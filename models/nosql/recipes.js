@@ -19,18 +19,37 @@ const RecipeScheme = new mongoose.Schema(
     },
     ingredients_quantity: {
       type: Number,
-    },   
+    },
     preparation_time: {
-      type: Number,
+      type: String,
     },
     author: {
       name: {
+        type: String,
+      },
+      nickname: {
         type: String,
       },
       nationality: {
         type: String,
       },
     },
+    duration: {
+      type: String,
+    },
+    // instructions: [
+    //   {
+    //     title: {
+    //       type: String,
+    //     },
+    //     description: {
+    //       type: String,
+    //     },
+    //     time: {
+    //       type: String,
+    //     },
+    //   },
+    // ],
 
     // cover: {
     //   type: String,
@@ -39,15 +58,6 @@ const RecipeScheme = new mongoose.Schema(
     //       return true;
     //     },
     //     message: 'ERROR_URL',
-    //   },
-    // },
-
-    // duration: {
-    //   start: {
-    //     type: Number,
-    //   },
-    //   end: {
-    //     type: Number,
     //   },
     // },
 
@@ -61,4 +71,4 @@ const RecipeScheme = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('recipe', RecipeScheme);
+module.exports = mongoose.model('recipes', RecipeScheme);
