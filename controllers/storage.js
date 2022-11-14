@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
-
+const { matchedData } = require('express-validator');
+const fs = require('fs');
 const { storageModel } = require('../models');
+const { handleHttpError } = require('../utils/handleError');
+// const optionsPaginate = require('../config/paginationParams');
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
-
-// const { matchedData } = require('express-validator');
-
-// const { handleHttpError } = require('../utils/handleError');
-
-// const optionsPaginate = require('../config/paginationParams');
+const MEDIA_PATH = `${__dirname}/../storage`;
 
 /**
  * Get detail by single row
@@ -17,28 +15,13 @@ const PUBLIC_URL = process.env.PUBLIC_URL;
  */
 const getItem = async (req, res) => {
   try {
-    req = matchedData(req);
-    const id = req.id;
-    const [data] = await storageModel.aggregate([
-      {
-        $lookup: {
-          from: 'storages',
-          localField: 'mediaId',
-          foreignField: '_id',
-          as: 'audio',
-        },
-      },
-      { $unwind: '$audio' },
-      {
-        $match: {
-          _id: mongoose.Types.ObjectId(id),
-        },
-      },
-    ]);
+    const { id } = matchedData(req);
+
+    const data = await storageModel.findById(id);
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, 'ERROR_DETAIL_ITEMS');
   }
 };
 
@@ -49,13 +32,11 @@ const getItem = async (req, res) => {
  */
 const getItems = async (req, res) => {
   try {
-    const [, options] = optionsPaginate(req);
-
-    const data = await storageModel.paginate({}, options);
+    const data = await storageModel.find({});
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, 'ERROR_LIST_ITEMS');
   }
 };
 
@@ -65,6 +46,10 @@ const getItems = async (req, res) => {
  * @param {*} res
  */
 const createItem = async (req, res) => {
+  const { body, file } = req;
+
+  console.log(file);
+
   try {
     // req = matchedData(req);
     // console.log(req);
@@ -84,7 +69,7 @@ const createItem = async (req, res) => {
 
     // req = { a: 1 };
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, e);
   }
 };
 
@@ -93,19 +78,19 @@ const createItem = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-const updateItem = async (req, res) => {
-  try {
-    req = matchedData(req);
-    const { id, ...body } = req;
+// const updateItem = async (req, res) => {
+//   try {
+//     req = matchedData(req);
+//     const { id, ...body } = req;
 
-    const data = await storageModel.findOneAndUpdate(id, body, {
-      new: true,
-    });
-    res.send({ data });
-  } catch (e) {
-    // handleHttpError(res, e);
-  }
-};
+//     const data = await storageModel.findOneAndUpdate(id, body, {
+//       new: true,
+//     });
+//     res.send({ data });
+//   } catch (e) {
+//     handleHttpError(res, e);
+//   }
+// };
 
 /**
  * delete row
@@ -114,18 +99,26 @@ const updateItem = async (req, res) => {
  */
 const deleteItem = async (req, res) => {
   try {
-    req = matchedData(req);
-    const id = req.id;
-    const findData = await storageModel.delete({ _id: id });
+    const {id} = matchedData(req);
+
+    const dataFile = await storageModel.findById(id);
+    await storageModel.delete({ _id: id });
+
+    const {filename} = dataFile;
+
+    const filePath = `${MEDIA_PATH}/${filename}`;
+
+    //fs.unlinkSync(filePath);   
+    
     const data = {
-      findData: findData,
+      filePath,
       deleted: true,
     };
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, e);
   }
 };
 
-module.exports = { getItems, getItem, createItem, updateItem, deleteItem };
+module.exports = { getItems, getItem, createItem, deleteItem };

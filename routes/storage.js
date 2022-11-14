@@ -4,14 +4,14 @@ const router = express.Router();
 
 const uploadMiddleware = require('../utils/handleStorage');
 
-const { createItem } = require('../controllers/storage');
+const {
+  getItem,
+  getItems,
+  createItem,
+  deleteItem,
+} = require('../controllers/storage');
 
-// const {
-//   getItem,
-//   getItems,
-//   createItem,
-//   deleteItem,
-// } = require('../controllers/storage');
+const { validatorGetItem } = require('../validators/storage');
 
 //const { validateId } = require('../validators/storage');
 
@@ -69,7 +69,7 @@ router.post('/', uploadMiddleware.single('myfile'), createItem );
  *        description: retorna el objeto insertado en la coleccion con stado '201'
  *
  */
-//router.get('/', getItems);
+router.get('/', getItems);
 
 /**
  * Detalle track
@@ -104,7 +104,7 @@ router.post('/', uploadMiddleware.single('myfile'), createItem );
  *      '201':
  *        description: retorna el objeto insertado en la coleccion con stado '201'
  */
-//router.get('/:id', validateId, getItem);
+router.get('/:id', validatorGetItem, getItem);
 
 /**
  * Delete storage
@@ -134,6 +134,6 @@ router.post('/', uploadMiddleware.single('myfile'), createItem );
  *        description: retorna el objeto insertado en la coleccion con stado '201'
  *
  */
-//router.delete('/:id', validateId, deleteItem);
+router.delete('/:id', validatorGetItem, deleteItem);
 
 module.exports = router;

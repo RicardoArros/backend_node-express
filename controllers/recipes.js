@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const { recipeModel } = require('../models');
 
-// const { matchedData } = require('express-validator');
+const { matchedData, body } = require('express-validator');
 
-// const { handleHttpError } = require('../utils/handleError');
+const { handleHttpError } = require('../utils/handleError');
 
 // const optionsPaginate = require('../config/paginationParams');
 
@@ -16,27 +16,14 @@ const { recipeModel } = require('../models');
 const getItem = async (req, res) => {
   try {
     req = matchedData(req);
-    const id = req.id;
-    const [data] = await recipeModel.aggregate([
-      {
-        $lookup: {
-          from: 'storages',
-          localField: 'mediaId',
-          foreignField: '_id',
-          as: 'audio',
-        },
-      },
-      { $unwind: '$audio' },
-      {
-        $match: {
-          _id: mongoose.Types.ObjectId(id),
-        },
-      },
-    ]);
+
+    const { id } = req;
+
+    const data = await recipeModel.findById({});
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, 'ERROR_GET_ITEM');
   }
 };
 
@@ -47,13 +34,11 @@ const getItem = async (req, res) => {
  */
 const getItems = async (req, res) => {
   try {
-    const [, options] = optionsPaginate(req);
-
-    const data = await recipeModel.paginate({}, options);
+    const data = await recipeModel.find({});
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, 'ERROR_GET_ITEMS');
   }
 };
 
@@ -64,17 +49,13 @@ const getItems = async (req, res) => {
  */
 const createItem = async (req, res) => {
   try {
-    // req = matchedData(req);
+    const body = matchedData(req);
 
-    // console.log(req);
-
-    req = { a: 1 };
-
-    const data = await recipeModel.create(req);
+    const data = await recipeModel.create(body);
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, 'ERROR_CREATE_ITEMS');
   }
 };
 
@@ -85,15 +66,13 @@ const createItem = async (req, res) => {
  */
 const updateItem = async (req, res) => {
   try {
-    req = matchedData(req);
-    const { id, ...body } = req;
+    const { id, ...body } = matchedData(req);
 
-    const data = await recipeModel.findOneAndUpdate(id, body, {
-      new: true,
-    });
+    const data = await recipeModel.findOneAndUpdate(id, body);
+
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    handleHttpError(res, 'ERROR_UPDATE_ITEMS');
   }
 };
 
@@ -105,16 +84,16 @@ const updateItem = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     req = matchedData(req);
-    const id = req.id;
-    const findData = await recipeModel.delete({ _id: id });
-    const data = {
-      findData: findData,
-      deleted: true,
-    };
+
+    const { id } = req;
+
+    const data = await recipeModel.delete({ _id: id });
 
     res.send({ data });
   } catch (e) {
-    // handleHttpError(res, e);
+    console.log(e);
+
+    handleHttpError(res, 'ERROR_DELETE_ITEM');
   }
 };
 

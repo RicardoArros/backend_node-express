@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const mongooseDelete = require('mongoose-delete');
+
 const RecipeScheme = new mongoose.Schema(
   {
     title: {
@@ -70,5 +72,7 @@ const RecipeScheme = new mongoose.Schema(
     versionKey: false,
   }
 );
+
+RecipeScheme.plugin(mongooseDelete, { overrideMethods: 'all' });
 
 module.exports = mongoose.model('recipes', RecipeScheme);
