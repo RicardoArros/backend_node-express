@@ -73,6 +73,35 @@ const RecipeScheme = new mongoose.Schema(
   }
 );
 
+/**
+ * Implementar método propio con relación a storage
+ */
+RecipeScheme.statics.findOneData = function (id) {
+  //return this.find({ name: new RegExp(name, 'i') });
+
+  const joinData = this.aggregate([
+    {
+      $match: {
+        _id: mongoose.Types.ObjectId(id)
+      }
+    },
+    {
+      $lookup: {
+        from: 'storages',
+        localField: 'mediaId',
+        foreignField: '_id',
+        as: 'audio'
+      }
+    },
+    {
+      $unwind: '$audio'
+    },
+  ])
+
+  return joinData;
+};
+
+//
 RecipeScheme.plugin(mongooseDelete, { overrideMethods: 'all' });
 
 module.exports = mongoose.model('recipes', RecipeScheme);

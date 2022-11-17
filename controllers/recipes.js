@@ -19,7 +19,7 @@ const getItem = async (req, res) => {
 
     const { id } = req;
 
-    const data = await recipeModel.findById({});
+    const data = await recipeModel.findOne(id);
 
     res.send({ data });
   } catch (e) {

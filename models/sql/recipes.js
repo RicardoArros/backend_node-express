@@ -29,9 +29,9 @@ const Recipes = sequelize.define(
     duration: {
       type: DataTypes.STRING
     },
-    role: {
-      type: DataTypes.ENUM(['guest', 'cooker', 'admin']),
-    },
+    // role: {
+    //   type: DataTypes.ENUM(['guest', 'cooker', 'admin']),
+    // },
   },
   {
     timestamps: true,

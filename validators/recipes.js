@@ -27,7 +27,7 @@ const validateObjectDataUpdate = [
 ];
 
 const validateId = [
-  check('id').exists().isMongoId(),
+  check('id').exists(),
   (req, res, next) => {
     validateResult(req, res, next);
   },

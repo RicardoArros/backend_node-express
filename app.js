@@ -8,9 +8,10 @@ const dbConnectNoSql = require('./config/mongo');
 const { dbConnectMySQL } = require('./config/mysql');
 
 // const swaggerUi = require('swagger-ui-express');
+// const swaggerSpec = require('./docs/swagger');
+
 // const morganBody = require('morgan-body');
 
-// const swaggerSpec = require('./docs/swagger');
 // const { loggerSlack } = require('./utils/handleLoger');
 
 const app = express();

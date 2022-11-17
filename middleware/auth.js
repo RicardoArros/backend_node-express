@@ -32,7 +32,7 @@ const checkAuth = async (req, res, next) => {
       [propertiesKey.id]: tokenData[propertiesKey.id]
     };
 
-    const user = await usersModel.findOne({});
+    const user = await usersModel.findOne(query);
     req.user = user;
 
     next();
