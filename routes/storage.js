@@ -39,7 +39,7 @@ const { validatorGetItem } = require('../validators/storage');
  */
 // router.post('/', upload.single('file'), createItem);
 
-router.post('/', uploadMiddleware.single('myfile'), createItem );
+router.post('/', uploadMiddleware.upload.single('myfile'), createItem );
 
 /**
  * Get list storages

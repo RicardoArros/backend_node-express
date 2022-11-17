@@ -4,9 +4,14 @@ const express = require('express');
 
 const cors = require('cors');
 
-const dbConnect = require('./config/mongo');
+const dbConnectNoSql = require('./config/mongo');
+const { dbConnectMySQL } = require('./config/mysql');
 
-const port = process.env.PORT || 3000;
+// const swaggerUi = require('swagger-ui-express');
+// const morganBody = require('morgan-body');
+
+// const swaggerSpec = require('./docs/swagger');
+// const { loggerSlack } = require('./utils/handleLoger');
 
 const app = express();
 
@@ -14,14 +19,43 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('storage'));
 
-/*
- * Se invoca a las rutas
+const engine = process.env.DB_ENGINE || null;
+const port = process.env.PORT || 3000;
+
+// morganBody(app, {
+//   skip: function (req, res) {
+//     return (
+//       [403, 404, 409, 401].includes(res.statusCode) || res.statusCode < 400
+//     );
+//   },
+//   stream: loggerSlack,
+// });
+
+/**
+ * API - Documentation
+ */
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+/**
+ * API Rest
+ */
+app.use("/api", require("./routes"));
+
+app.listen(port, () =>
+  console.log(`Tu server esta listo por el puerto ${port}`)
+);
+
+
+/**
+ * Define your database engine
  */
 
-app.use('/api', require('./routes'));
-
-app.listen(port, () => {
-  console.log(`'Tu app está lista por http://localhost:${port}`);
-});
-
-dbConnect();
+if (engine === "mysql") {
+  dbConnectMySQL();
+  return;
+}
+if (engine === "nosql") {
+  dbConnectNoSql();
+  return;
+}
