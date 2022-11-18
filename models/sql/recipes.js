@@ -1,5 +1,6 @@
 const { sequelize } = require('../../config/mysql');
 const { DataTypes } = require('sequelize');
+const Storage = require('./storage');
 
 const Recipes = sequelize.define(
   'recipes',
@@ -23,12 +24,18 @@ const Recipes = sequelize.define(
     ingredients_qty: {
       type: DataTypes.INTEGER,
     },
+    instructions_qty: {
+      type: DataTypes.INTEGER,
+    },
     preparation_time: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
-    duration: {
-      type: DataTypes.STRING
+    imgId: {
+      type: DataTypes.STRING,
     },
+    // duration: {
+    //   type: DataTypes.STRING,
+    // },
     // role: {
     //   type: DataTypes.ENUM(['guest', 'cooker', 'admin']),
     // },
@@ -37,5 +44,29 @@ const Recipes = sequelize.define(
     timestamps: true,
   }
 );
+
+
+/**
+ * Implementando modelo personalizado
+ */
+
+Recipes.findAllData = function () {
+  Recipes.belongsTo(Storage, {
+    foreignKey: 'imgId',
+    as: 'img'
+  });
+
+  return Recipes.findAll({ include: 'img' });
+};
+
+Recipes.findOneData = function (id) {
+  Recipes.belongsTo(Storage, {
+    foreignKey: 'imgId',
+    as: 'img'
+  });
+
+  return Recipes.findOne({ where: {id}, include: 'img' });
+};
+
 
 module.exports = Recipes;
