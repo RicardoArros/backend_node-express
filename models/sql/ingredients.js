@@ -1,30 +1,20 @@
 const { sequelize } = require('../../config/mysql');
-
 const { DataTypes } = require('sequelize');
 
-const User = sequelize.define(
-  'users',
+const Ingredient = sequelize.define(
+  'ingredients',
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    category: {
       type: DataTypes.STRING,
-    },
-    password: {
-      type: DataTypes.STRING,
-    },
-    // image: {
-    //   type: DataTypes.STRING,
-    // },
-    role: {
-      type: DataTypes.ENUM(['guest', 'cooker', 'admin']),
     },
   },
   {
@@ -32,4 +22,4 @@ const User = sequelize.define(
   }
 );
 
-module.exports = User;
+module.exports = Ingredient;

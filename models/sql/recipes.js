@@ -1,10 +1,17 @@
 const { sequelize } = require('../../config/mysql');
 const { DataTypes } = require('sequelize');
+
 const Storage = require('./storage');
+const Ingredient = require('./ingredients');
 
 const Recipes = sequelize.define(
   'recipes',
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -33,27 +40,21 @@ const Recipes = sequelize.define(
     imgId: {
       type: DataTypes.STRING,
     },
-    // duration: {
-    //   type: DataTypes.STRING,
-    // },
-    // role: {
-    //   type: DataTypes.ENUM(['guest', 'cooker', 'admin']),
-    // },
   },
   {
     timestamps: true,
   }
 );
 
-
 /**
  * Implementando modelo personalizado
  */
 
+// Storage
 Recipes.findAllData = function () {
   Recipes.belongsTo(Storage, {
     foreignKey: 'imgId',
-    as: 'img'
+    as: 'img',
   });
 
   return Recipes.findAll({ include: 'img' });
@@ -62,11 +63,17 @@ Recipes.findAllData = function () {
 Recipes.findOneData = function (id) {
   Recipes.belongsTo(Storage, {
     foreignKey: 'imgId',
-    as: 'img'
+    as: 'img',
   });
 
-  return Recipes.findOne({ where: {id}, include: 'img' });
+  return Recipes.findOne({ where: { id }, include: 'img' });
 };
 
+// Ingredient
+Recipes.hasMany(Ingredient, {
+  foreinkey: 'ingredientId',
+  sourceKey: 'id',
+});
+Ingredient.belongsTo(Recipes, { foreinkey: 'ingredientId', targetId: 'id' });
 
 module.exports = Recipes;

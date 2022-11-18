@@ -1,30 +1,26 @@
 const { sequelize } = require('../../config/mysql');
-
 const { DataTypes } = require('sequelize');
 
-const User = sequelize.define(
-  'users',
+const Instructions = sequelize.define(
+  'instructions',
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    email: {
+    description: {
       type: DataTypes.STRING,
     },
-    password: {
-      type: DataTypes.STRING,
+    instruction_time: {
+      type: DataTypes.INTEGER,
     },
-    // image: {
-    //   type: DataTypes.STRING,
-    // },
-    role: {
-      type: DataTypes.ENUM(['guest', 'cooker', 'admin']),
+    instruction_number: {
+      type: DataTypes.INTEGER,
     },
   },
   {
@@ -32,4 +28,4 @@ const User = sequelize.define(
   }
 );
 
-module.exports = User;
+module.exports = Instructions;

@@ -9,7 +9,6 @@ const { dbConnectMySQL } = require('./config/mysql');
 
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerSpec = require('./docs/swagger');
-
 // const morganBody = require('morgan-body');
 
 // const { loggerSlack } = require('./utils/handleLoger');
@@ -37,26 +36,24 @@ const port = process.env.PORT || 3000;
  */
 // app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
 /**
  * API Rest
  */
-app.use("/api", require("./routes"));
+app.use('/api', require('./routes'));
 
 app.listen(port, () =>
   console.log(`Tu server esta listo por el puerto ${port}`)
 );
 
-
 /**
  * Define your database engine
  */
 
-if (engine === "mysql") {
+if (engine === 'mysql') {
   dbConnectMySQL();
   return;
 }
-if (engine === "nosql") {
+if (engine === 'nosql') {
   dbConnectNoSql();
   return;
 }
