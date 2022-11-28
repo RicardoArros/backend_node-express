@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { ingredientModel } = require('../models');
+const { models, ingredientModel } = require('../models');
 
 const { matchedData, body } = require('express-validator');
 
@@ -34,10 +34,23 @@ const getItem = async (req, res) => {
  */
 const getItems = async (req, res) => {
   try {
-    const data = await ingredientModel.find({});
+    const data = await ingredientModel
+      .findAll({
+        //raw: true,
+        // where: {
+        //   [Op.and]: [{ is_deleted: false }, { is_active: true }],
+        // },
+        //attributes: ['id', 'name', 'category']
+      })
+      // .then((ingredientes) => {
+      //   const resultado = JSON.stringify(ingredientes);
+
+      //   console.log(resultado);
+      // });
 
     res.send({ data });
   } catch (e) {
+    console.log(e);
     handleHttpError(res, 'ERROR_GET_ITEMS');
   }
 };
@@ -51,7 +64,7 @@ const createItem = async (req, res) => {
   try {
     const body = matchedData(req);
 
-    const data = await ingredientModel.create(body);
+    const data = await models.ingredientModel.create(body);
 
     res.send({ data });
   } catch (e) {
@@ -68,7 +81,7 @@ const updateItem = async (req, res) => {
   try {
     const { id, ...body } = matchedData(req);
 
-    const data = await ingredientModel.findOneAndUpdate(id, body);
+    const data = await models.ingredientModel.findOneAndUpdate(id, body);
 
     res.send({ data });
   } catch (e) {
@@ -87,7 +100,7 @@ const deleteItem = async (req, res) => {
 
     const { id } = req;
 
-    const data = await ingredientModel.delete({ _id: id });
+    const data = await models.ingredientModel.delete({ _id: id });
 
     res.send({ data });
   } catch (e) {

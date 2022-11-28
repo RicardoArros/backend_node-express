@@ -22,4 +22,6 @@ const Ingredient = sequelize.define(
   }
 );
 
+Ingredient.sync({ force: true });
+
 module.exports = Ingredient;

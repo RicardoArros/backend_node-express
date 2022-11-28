@@ -29,4 +29,3 @@ CREATE TABLE Ingredients (
   category VARCHAR(25) NOT NULL,
 )
 
-DESCRIBE ingredients;

@@ -12,6 +12,9 @@ const sequelize = new Sequelize(database, username, password, {
   dialect: 'mysql',
 });
 
+// Initalizing models
+// setupModels(sequelize);
+
 //
 const dbConnectMySQL = async () => {
   try {

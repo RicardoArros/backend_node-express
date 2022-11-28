@@ -71,7 +71,7 @@ Recipes.findOneData = function (id) {
 
 // Ingredient
 Recipes.hasMany(Ingredient, {
-  foreinkey: 'ingredientId',
+  foreignkey: 'ingredientId',
   sourceKey: 'id',
 });
 Ingredient.belongsTo(Recipes, { foreinkey: 'ingredientId', targetId: 'id' });
